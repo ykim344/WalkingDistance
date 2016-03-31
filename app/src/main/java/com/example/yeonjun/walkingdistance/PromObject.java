@@ -53,7 +53,7 @@ public class PromObject implements Serializable {
         return expirationHour;
     }
 
-    public byte[] getbusinessPhoto(){
+    public byte[] getBusinessPhoto(){
         return businessPhoto;
     }
 
