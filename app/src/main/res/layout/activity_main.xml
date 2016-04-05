@@ -39,14 +39,13 @@
 
     </LinearLayout>
 
-
-    <fragment
-        android:layout_width="match_parent"
+    <GridView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listview"
-        android:name="android.support.v4.app.ListFragment"
+        android:id="@+id/gridView"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/linearLayout" />
+        android:layout_below="@+id/linearLayout"
+        android:numColumns="2"/>
+
 
 </RelativeLayout>

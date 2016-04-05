@@ -1,19 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Expiration:Whatever"
-        android:id="@+id/expirationText"
-        android:layout_gravity="center_horizontal" />
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainlayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:foregroundGravity="bottom"
+    android:orientation="vertical" >
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:id="@+id/businessImage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/storefront2" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/businessImageView"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+        android:layout_gravity="bottom"
+        android:background="#80000000"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/storeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="10dip"
+            android:text="Greggs Store"
+            android:textColor="#fcf6f6"
+            android:textIsSelectable="true"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/expDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="10dip"
+            android:text="Exp: 3:00pm 06/08/2017"
+            android:textColor="#fcf6f6"
+            android:textIsSelectable="true"
+            android:textSize="20sp" />
+    </LinearLayout>
+</FrameLayout>

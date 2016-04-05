@@ -28,7 +28,7 @@ public class PromObject implements Serializable {
     }
 
     public PromObject(long id, String businessName, int expirationDay, int expirationHour, byte[] businessPhoto,byte[] promoPhoto){
-       this.id = id;
+        this.id = id;
         this.businessName = businessName;
         this.expirationDay = expirationDay;
         this.expirationHour = expirationHour;
@@ -53,12 +53,17 @@ public class PromObject implements Serializable {
         return expirationHour;
     }
 
-    public byte[] getBusinessPhoto(){
+    public byte[] getbusinessPhoto(){
         return businessPhoto;
     }
 
     public byte[] getPromoPhoto(){
         return promoPhoto;
+    }
+
+    public String promoDateTime(){
+
+        return expirationDay + " at " + expirationHour ;
     }
 
 }
