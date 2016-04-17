@@ -2,7 +2,6 @@ package com.example.yeonjun.walkingdistance;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.GridView;
 import android.widget.ListView;
 
 import java.io.File;
@@ -17,21 +16,17 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<PromObject> promotions;
-    private GridView promoListview ;
+    private ListView promoListview ;
     private PromoAdapter mPromoAdapter ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        promotions = new ArrayList<PromObject>();
-        // 2promotions.add();
-        promoListview = (GridView)findViewById(R.id.gridView);
-        mPromoAdapter = new PromoAdapter(this, R.layout.list_promobject_layout,promotions);
-
-
-        if(promoListview != null){
-            promoListview.setAdapter(mPromoAdapter);
-        }
+        promoListview = (ListView)findViewById(R.id.gridView);
+        mPromoAdapter = new PromoAdapter(getApplicationContext(), R.layout.promoIcon,promotions);
+         if(promoListview != null){
+             promoListview.setAdapter(mPromoAdapter);
+         }
 
 
 
