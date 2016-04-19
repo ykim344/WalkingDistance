@@ -1,9 +1,14 @@
 package com.example.yeonjun.walkingdistance;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,14 +24,35 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<PromObject> promotions;
     private GridView promoListview ;
     private CustomPromoAdapter mPromoAdapter ;
+    private BroadcastReceiver reloadPromoReceiver;
+    private IntentFilter iFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         promotions = new ArrayList<PromObject>();
         // 2promotions.add();
         promoListview = (GridView)findViewById(R.id.gridView);
         mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
+        iFilter = new IntentFilter();
+        iFilter.addAction("reloadNewPromos");
+        Intent serviceIntent = new Intent(this,GPSPromoGetService.class);
+        startService(serviceIntent);
+        Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
+
+        //Stufff done for receiving broadcast from the background intent service
+        reloadPromoReceiver = new BroadcastReceiver(){
+            public void onReceive(Context context, Intent intent) {
+                //loadFromDisk();//TODO:this should be done async
+                //mPromoAdapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "got message from service",Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        registerReceiver(reloadPromoReceiver,iFilter);
 
 
         if(promoListview != null){
@@ -42,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
             //load successful, TODO:check for and delete expired promos finish the method via getting an iterator etc
             deleteExpired(promotions);
         }
+
+
 
     }
 

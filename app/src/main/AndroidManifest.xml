@@ -13,8 +13,12 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="reloadNewPromos"/>
             </intent-filter>
         </activity>
+        <service
+            android:name=".GPSPromoGetService"
+            android:exported ="false"/>
     </application>
 
 </manifest>
