@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<PromObject> promotions;
     private GridView promoListview ;
-    private PromoAdapter mPromoAdapter ;
+    private CustomPromoAdapter mPromoAdapter ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         promotions = new ArrayList<PromObject>();
         // 2promotions.add();
         promoListview = (GridView)findViewById(R.id.gridView);
-        mPromoAdapter = new PromoAdapter(this, R.layout.list_promobject_layout,promotions);
+        mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
 
 
         if(promoListview != null){

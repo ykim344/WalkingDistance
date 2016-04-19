@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +83,13 @@ public class CustomPromoAdapter extends BaseAdapter{
 
         viewHolder.bName.setText(promo.getBusinessName());
         viewHolder.bExp.setText(promo.promoDateTime());
+        Picasso.with(context)
+                .load(promo.getbusinessPhoto())
+                .into(viewHolder.bImage);
+        //byte[] businessPhoto = promo.getbusinessPhoto();
+        //Bitmap Businessbmp = BitmapFactory.decodeByteArray(businessPhoto, 0,businessPhoto.length);
+        //viewHolder.bImage.setImageBitmap(Businessbmp);
 
-        byte[] businessPhoto = promo.getbusinessPhoto();
-        Bitmap Businessbmp = BitmapFactory.decodeByteArray(businessPhoto, 0,businessPhoto.length);
-        viewHolder.bImage.setImageBitmap(Businessbmp);
 
 
 

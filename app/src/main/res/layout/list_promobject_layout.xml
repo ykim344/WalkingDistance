@@ -1,6 +1,6 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainlayout"
+    android:id="@+id/mainLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:foregroundGravity="bottom"
@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/storefront2" />
+        />
 
     <LinearLayout
         android:layout_width="fill_parent"
