@@ -15,6 +15,7 @@ public class PromObject implements Serializable {
     private byte[] promoPhoto;//to get/save images from disk and to get from JSON, they can be converted to bitmaps in the activity
     private String businessName;  //might not need this
     private long id; //unique id for promo item may not be necessary
+    private boolean liked;
 
     //null empty constructor
     public PromObject(){
@@ -24,7 +25,7 @@ public class PromObject implements Serializable {
         promoPhoto = null;
         businessName = null;
         id = -1;
-
+        liked = false;
     }
 
     public PromObject(long id, String businessName, int expirationDay, int expirationHour, byte[] businessPhoto,byte[] promoPhoto){
@@ -59,6 +60,12 @@ public class PromObject implements Serializable {
 
     public byte[] getPromoPhoto(){
         return promoPhoto;
+    }
+
+    public boolean getLiked(){return liked;}
+
+    public void setLiked(boolean liked){
+        this.liked = liked;
     }
 
     public String promoDateTime(){

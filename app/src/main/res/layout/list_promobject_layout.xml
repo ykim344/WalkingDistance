@@ -11,7 +11,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/storefront2" />
+        android:src="@mipmap/burger_pic"
+        />
 
     <LinearLayout
         android:layout_width="fill_parent"
