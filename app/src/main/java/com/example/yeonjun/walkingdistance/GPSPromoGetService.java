@@ -8,9 +8,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 
@@ -22,6 +25,7 @@ public class GPSPromoGetService extends Service {
     private Handler timerMessage;
     private Message getPromo;
     private Criteria gpsCriteria;
+    private Location prevLoc;
     private LocationListener gpsListener;
     private LocationManager gpsManager;
     private String gpsProvider;
@@ -38,24 +42,14 @@ public class GPSPromoGetService extends Service {
 
 
     public void onCreate() {
-       /* System.out.println("!!!!!!IN GPS PROMO SERVICE!!!!!!");
-        timerMessage = new Handler();
+        System.out.println("!!!!!!IN GPS PROMO SERVICE!!!!!!");
 
-        //getPromo = new Message();
-        //timerMessage.sendMessageDelayed(getPromo, 6000);
+        prevLoc = null;
 
-         Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                task();
-                timerMessage.postDelayed(this, 6000);
-            }
-        };
-        timerMessage.postDelayed(runnable,6000);
-        */
         try {
             gpsManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             gpsProvider = gpsManager.NETWORK_PROVIDER;
+
             gpsListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
                     // Called when a new location is found by the network location provider.
@@ -66,14 +60,16 @@ public class GPSPromoGetService extends Service {
                 }
 
                 public void onProviderEnabled(String provider) {
+                    System.out.println("@@@@@@@@PROVIDER enabled!@@@@@@");
+
                 }
 
                 public void onProviderDisabled(String provider) {
+                    System.out.println("@@@@@@@@PROVIDER DISABLED!@@@@@@");
                 }
             };
 
-            //checkSelfPermission(android.permission.ACCESS_COARSE_LOCATION);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -82,38 +78,29 @@ public class GPSPromoGetService extends Service {
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
                 return;
-            }
-            gpsManager.requestLocationUpdates(gpsProvider, 60000, 60, gpsListener);//this puppy throws errors!
+            }*/
+            gpsManager.requestLocationUpdates(gpsProvider, 65000, 230, gpsListener);//this puppy throws errors!
+
+
+
+
+
+
+            System.out.println("@@@@@@@@GPS SETUP IN SERVICE@@@@@@");
         }catch(Exception e){e.printStackTrace();}
 
 
     }
 
     private void useCoords(Location in){
+        System.out.println("@@@@@@@@IN USE COORDS IN SERVICE@@@@@@");
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction("gotcoords");
         broadcastIntent.putExtra("Latitude", in.getLatitude());
         broadcastIntent.putExtra("Longitude", in.getLongitude());
         sendBroadcast(broadcastIntent);
-        System.out.println("Got longitude: "+ in.getLongitude());
+        System.out.println("Got longitude: " + in.getLongitude());
 
-
-    }
-
-    public void task(){
-        System.out.println("@@@@@@@@IN HANDLE MESSAGE IN SERVICE@@@@@@");
-        //TODO: get coordinates gps
-
-        //TODO: send http message to get object
-
-        //TODO: save promo to file
-        Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("reloadNewPromos");
-        sendBroadcast(broadcastIntent);
-
-
-
-        return;
 
     }
 

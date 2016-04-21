@@ -19,7 +19,6 @@
         </activity>
         <service
             android:name=".GPSPromoGetService"
-            android:process=":WDistanceGPS"
             android:exported ="false"/>
     </application>
 
