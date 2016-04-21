@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 //loadFromDisk();//TODO:this should be done async
                 //mPromoAdapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), "got message from service",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "got Latitude: " + intent.getDoubleExtra("Latitude",0),Toast.LENGTH_SHORT).show();
 
             }
         };
