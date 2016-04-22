@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WalkingDistance.iml" filepath="$PROJECT_DIR$/WalkingDistance.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wdbackend/wdbackend.iml" filepath="$PROJECT_DIR$/wdbackend/wdbackend.iml" />
     </modules>
   </component>
 </project>

@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.googlecode.objectify.ObjectifyService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -148,23 +149,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             //TODO:  USE COORDINATES TO GET NEW PROMO and add it to the arraylist and update adapter
-             final OkHttpClient client = new OkHttpClient();
-             final Gson gson = new Gson();
 
 
-                Request request = new Request.Builder()
-                        .url("https://api.github.com/gists/c2a7c39532239ff261be")
-                        .build();
-            Response response = null;
 
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-                PromObject promTemp = gson.fromJson(response.body().charStream(), PromObject.class);
-            /*
-                for (Map.Entry<String, GistFile> entry : gist.files.entrySet()) {
-                    System.out.println(entry.getKey());
-                    System.out.println(entry.getValue().content);
-                }*/
+            return null;
+        }
+    }
+
+    private class OrmStartup extends AsyncTask<String,Void,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            //TODO:  USE COORDINATES TO GET NEW PROMO and add it to the arraylist and update adapter
+            ObjectifyService.register(PromObject.class);
 
 
 
