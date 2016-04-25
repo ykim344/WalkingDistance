@@ -23,7 +23,7 @@
             android:text="Promos"
             android:id="@+id/promobutn"
             android:layout_weight="1"
-            android:background="#fefcfc"
+            android:background="#80000000"
             android:textColor="#b74e4e"
             android:textSize="30dp" />
 
@@ -33,7 +33,7 @@
             android:text="Liked"
             android:id="@+id/likedbutn"
             android:layout_weight="1.5"
-            android:background="#fefcfc"
+            android:background="#80000000"
             android:textColor="#b74e4e"
             android:textSize="30dp" />
 

@@ -35,12 +35,14 @@ public class PromObject implements Serializable {
 
     }
 
-    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String urlPhotos){
+    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String urlPhotos , Double Long, Double Lat){
         this.id = id;
         this.businessName = businessName;
         this.expirationDay = expirationDay;
         this.expirationHour = expirationHour;
         this.bpImages = urlPhotos;
+        this.longitude = Long;
+        this.latitude = Lat ;
 
     }
 
@@ -61,14 +63,22 @@ public class PromObject implements Serializable {
     }
 
     public String getbusinessPhoto(){
-        String urlBphoto = "https://storage.cloud.google.com/" + "walkingdistance/Bimage/" + bpImages  ;
+        String urlBphoto =  bpImages  ;
         return urlBphoto;
     }
 
     public String getPromoPhoto(){
-        String urlBpromo = "https://storage.cloud.google.com/" + "walkingdistance/Bpromo/" + bpImages  ;
+        String urlBpromo =  bpImages  ;
 
         return urlBpromo;
+    }
+
+    public double getLongitude(){
+        return longitude ;
+    }
+
+    public double getLatitude() {
+        return latitude;
     }
 
     public String promoDateTime(){

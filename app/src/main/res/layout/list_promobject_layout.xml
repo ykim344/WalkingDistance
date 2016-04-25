@@ -1,16 +1,27 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:foregroundGravity="bottom"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="Black">
 
     <ImageView
         android:id="@+id/businessImage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:layout_centerInParent="true"
+        android:leftBorderColor="#80dec2a1"
+        android:leftBorderWidth="5dp"
+        android:topBorderColor="#80dec2a1"
+        android:topBorderWidth="5dp"
+        android:rightBorderColor="#80dec2a1"
+        android:rightBorderWidth="5dp"
+        android:bottomBorderColor="#80dec2a1"
+        android:bottomBorderWidth="5dp"
         />
 
     <LinearLayout
@@ -18,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="#80000000"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:id="@+id/mainImage">
 
         <TextView
             android:id="@+id/storeName"
@@ -41,4 +53,12 @@
             android:textIsSelectable="true"
             android:textSize="20sp" />
     </LinearLayout>
-</FrameLayout>
+
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map"
+        android:layout_below= "@id/mainImage"
+        android:name="com.google.android.gms.maps.MapFragment">
+    </fragment>
+</LinearLayout>

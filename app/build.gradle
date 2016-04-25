@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+
+
+
 repositories {
     mavenCentral()
     maven {
@@ -31,7 +34,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile group: 'com.squareup.picasso', name: 'picasso', version: '2.3.2'
     compile group: 'com.googlecode.objectify', name: 'objectify', version: '5.1.12'
-
+    compile 'com.google.android.gms:play-services-analytics:8.3.0' // Grisha Added
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'

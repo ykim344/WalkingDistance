@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Walking Distance</string>
+    <string name= "gcm_project_key">92195c5e6cc5</string>
 </resources>
