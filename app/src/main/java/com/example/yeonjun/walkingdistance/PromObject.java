@@ -14,20 +14,20 @@ public class PromObject implements Serializable {
     //int for expiration day of month and hour of day. kept as a primitve and not a date type
     //so that it can be easily serializable and saved to disk and received as JSON data
     //some task will have to check every hour and on startup for expired promo objects and delete them.
-    private int expirationDay;//day of month starts at 1
-    private int expirationHour;//hour of day military time
-    @Index private double latitude;
-    @Index private double longitude;
+    private String expirationDay;//day of month starts at 1
+    private String expirationHour;//hour of day military time
+    @Index private String latitude;
+    @Index private String longitude;
     private String bpImages;//to get/save images from disk and to get from JSON, they can be converted to bitmaps in the activity
     private String businessName;  //might not need this
     @Id private long id; //unique id for promo item may not be necessary
 
     //null empty constructor
     public PromObject(){
-        expirationDay = 0;//maybe set to -1 for no expiration
-        expirationHour = 0;//maybe set to -1 for no expiration
-        latitude = 0.0;
-        longitude = 0.0;
+        expirationDay = null;
+        expirationHour = null;//maybe set to -1 for no expiration
+        latitude = null;
+        longitude = null;
         bpImages = null;
         bpImages = null;
         businessName = null;
@@ -35,8 +35,8 @@ public class PromObject implements Serializable {
 
     }
 
-    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String urlPhotos , Double Long, Double Lat){
-        this.id = id;
+    public PromObject( String businessName, String expirationDay, String expirationHour, String urlPhotos , String Long, String Lat){
+
         this.businessName = businessName;
         this.expirationDay = expirationDay;
         this.expirationHour = expirationHour;
@@ -54,11 +54,11 @@ public class PromObject implements Serializable {
         return businessName;
     }
 
-    public int getExpirationDay(){
+    public String getExpirationDay(){
         return expirationDay;
     }
 
-    public int getExpirationHour(){
+    public String getExpirationHour(){
         return expirationHour;
     }
 
@@ -73,11 +73,11 @@ public class PromObject implements Serializable {
         return urlBpromo;
     }
 
-    public double getLongitude(){
+    public String getLongitude(){
         return longitude ;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 

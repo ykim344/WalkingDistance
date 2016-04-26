@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +20,9 @@ import android.widget.Toast;
 
 
 import com.googlecode.objectify.ObjectifyService;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,9 +35,11 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 //loadFromDisk();//TODO:this should be done async
                 //mPromoAdapter.notifyDataSetChanged();
+                DownloadPromo promoTask = new DownloadPromo();
+                String latidude = intent.getDoubleExtra("Latitude",0));
+                String longitude = String.valueOf(intent.getDoubleExtra("Longitude",0));
+
+                promoTask.execute(latidude,longitude);
+;
                 Toast.makeText(getApplicationContext(), "got Latitude: " + intent.getDoubleExtra("Latitude", 0), Toast.LENGTH_SHORT).show();
 
             }
@@ -107,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                 PromObject Obj = (PromObject) parent.getAdapter().getItem(position);
                 Intent mIntent = new Intent(MainActivity.this, toPromoImage.class);
                 Bundle mBundle = new Bundle();
-                mBundle.putDouble("Long", Obj.getLongitude());
-                mBundle.putDouble("Lat", Obj.getLatitude());
+                mBundle.putString("Long", Obj.getLongitude());
+                mBundle.putString("Lat", Obj.getLatitude());
                 mBundle.putString("ImageUrl", Obj.getbusinessPhoto());
                 mBundle.putString("Bname", Obj.getBusinessName());
                 mBundle.putString("Exp", Obj.promoDateTime());
@@ -219,43 +231,68 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class DownloadPromo extends AsyncTask<String, Void, String> {
+    private class DownloadPromo extends AsyncTask<String,Void,String> {
 
         @Override
         protected String doInBackground(String... params) {
             //TODO:  USE COORDINATES TO GET NEW PROMO and add it to the arraylist and update adapter
 
             OkHttpClient client = new OkHttpClient();
+            double longitude = params[0];
+            String latidude = params[1];
 
-            intent.getDoubleExtra("Latitude", 0)
 
-            client.run();
+           run(longitude,latidude);
         }
 
-        public void run() throws Exception {
-            Request request = new Request.Builder()
-                    .url("http://hidden-fortress-95984.heroku.com/db")
+        public void run( String Longitude, String Latitude) throws Exception {
+
+            RequestBody body = new FormBody.Builder()
+                    .add("TheLong", Longitude)
+                    .add("TheLat", Latitude)
                     .build();
 
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
+            Request request = new Request.Builder()
+                    .url("http://hidden-fortress-95984.heroku.com/db")
+                    .post(body)
+                    .build();
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if (!response.isSuccessful())
-                        throw new IOException("Unexpected code " + response);
+            Response response = null ;
+            String jsonData = response.body().string();
 
-                    Headers responseHeaders = response.headers();
-                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
-                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-                    }
+            JSONObject Jobject = new JSONObject(jsonData);
+            JSONArray Jarray = Jobject.getJSONArray("Bussiness");
 
-                    System.out.println(response.body().string());
-                }
-            });
+            String bName ,bExpHour ,bExpDay,UrlBPhoto,UrlBPromo ,mLong,mLat ; //Strings that will store data
+            PromObject newObject ;
+            int limit = Jarray.length();
+
+            String dataStore[] = new String[limit];
+
+            for (int i = 0; i < limit; i++) {
+                JSONObject object  = Jarray.getJSONObject(i);
+
+                bName = object.getString("BussinessName");
+                bExpDay = object.getString("ExperationDay");
+                UrlBPhoto = object.getString("BussinessPhoto");
+                UrlBPromo = object.getString("URLPromo");
+                mLong = object.getString("Longitude");
+                mLat = object.getString("Latitude");
+
+                Log.d("JSON DATA", bName + " ## " + bExpDay + "##" + UrlBPhoto +"##"+ UrlBPromo +"##"+ mLong + "##" + mLat);
+
+                newObject = new PromObject(bName,bExpDay,UrlBPhoto,UrlBPromo,mLong,mLat);
+                promotions.add(newObject);
+                mPromoAdapter.notifyDataSetChanged();
+                //store the data into the array
+
+            }
+
+
+
+
+
+            };
         }
     }
 }
