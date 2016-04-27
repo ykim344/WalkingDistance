@@ -12,7 +12,10 @@ public class PromObject implements Serializable {
     private int expirationDay;//day of month starts at 1
     private int expirationHour;//hour of day military time
     private String promoPhoto;//to get/save images from disk and to get from JSON, they can be converted to bitmaps in the activity
+    private String businessPhoto;
     private String businessName;  //might not need this
+    private String longitude;
+    private String latitude;
     private long id; //unique id for promo item may not be necessary
 
     //null empty constructor
@@ -26,12 +29,15 @@ public class PromObject implements Serializable {
 
     }
 
-    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String urlPhotos){
+    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String businessPhoto, String promoPhoto,String longitude,String latitude){
         this.id = id;
         this.businessName = businessName;
         this.expirationDay = expirationDay;
         this.expirationHour = expirationHour;
-        this.promoPhoto = urlPhotos;
+        this.promoPhoto = promoPhoto;
+        this.businessPhoto = businessPhoto;
+        this.longitude = longitude;
+        this.latitude = latitude;
 
     }
 
@@ -52,14 +58,22 @@ public class PromObject implements Serializable {
     }
 
     public String getbusinessPhoto(){
-        String urlBphoto = "https://storage.cloud.google.com/" + "walkingdistance/Bimage/" + promoPhoto  ;
-        return urlBphoto;
+        //String urlBphoto = "https://storage.cloud.google.com/" + "walkingdistance/Bimage/" + promoPhoto  ;
+        return businessPhoto;
     }
 
     public String getPromoPhoto(){
-        String urlBpromo = "https://storage.cloud.google.com/" + "walkingdistance/Bpromo/" + promoPhoto  ;
+        //String urlBpromo = "https://storage.cloud.google.com/" + "walkingdistance/Bpromo/" + promoPhoto  ;
 
-        return urlBpromo;
+        return promoPhoto;
+    }
+
+    public String getlatitude(){
+        return latitude;
+    }
+
+    public String getLongitude(){
+        return longitude;
     }
 
     public String promoDateTime(){

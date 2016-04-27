@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +23,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<PromObject> promotions;
     private GridView promoListview ;
     private CustomPromoAdapter mPromoAdapter ;
-    private BroadcastReceiver reloadPromoReceiver;
+    private BroadcastReceiver gpsUpdateReceiver;
     private IntentFilter iFilter;
 
     @Override
@@ -46,20 +49,27 @@ public class MainActivity extends AppCompatActivity {
         iFilter = new IntentFilter();
         iFilter.addAction("reloadNewPromos");
         Intent serviceIntent = new Intent(this,GPSPromoGetService.class);
-        startService(serviceIntent);
+       // startService(serviceIntent);
         Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
 
+        DownloadPromo downTask = new DownloadPromo();
+        downTask.execute("-89.406318", "43.071309");
+
+
+
         //Stufff done for receiving broadcast from the background intent service
-        reloadPromoReceiver = new BroadcastReceiver(){
+        gpsUpdateReceiver = new BroadcastReceiver(){
             public void onReceive(Context context, Intent intent) {
-                //loadFromDisk();//TODO:this should be done async
+                DownloadPromo downTask = new DownloadPromo();
+                //downTask.execute(Double.toString(intent.getDoubleExtra("Longitude",0)),Double.toString(intent.getDoubleExtra("Latitude",0)));
+                downTask.execute("-89.406318","43.071309");
                 //mPromoAdapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), "got Latitude: " + intent.getDoubleExtra("Latitude",0),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "got Latitude: " + intent.getDoubleExtra("Latitude",0),Toast.LENGTH_SHORT).show();
 
             }
         };
 
-        registerReceiver(reloadPromoReceiver,iFilter);
+        registerReceiver(gpsUpdateReceiver,iFilter);
 
 
         if(promoListview != null){
@@ -68,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        boolean loadResult;
-        promotions = null;
-        loadResult = loadFromDisk();
-        if(loadResult  && promotions != null){
+       // boolean loadResult;
+       // promotions = null;
+       // loadResult = loadFromDisk();
+       // if(loadResult  && promotions != null){
             //load successful, TODO:check for and delete expired promos finish the method via getting an iterator etc
-            deleteExpired(promotions);
-        }
+            //deleteExpired(promotions);
+       // }
 
 
 
@@ -116,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     //method for loading promotions from disk
     //returns a boolean for failure etc
     //TODO:  sloppily done needs some more advanced file checking or whatever maybe
@@ -143,32 +155,68 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private class DownloadPromo extends AsyncTask<String,Void,String> {
 
         @Override
         protected String doInBackground(String... params) {
             //TODO:  USE COORDINATES TO GET NEW PROMO and add it to the arraylist and update adapter
              final OkHttpClient client = new OkHttpClient();
-             final Gson gson = new Gson();
-
-
-                Request request = new Request.Builder()
-                        .url("https://api.github.com/gists/c2a7c39532239ff261be")
-                        .build();
-            Response response = null;
-
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                PromObject promTemp = gson.fromJson(response.body().charStream(), PromObject.class);
-            /*
-                for (Map.Entry<String, GistFile> entry : gist.files.entrySet()) {
-                    System.out.println(entry.getKey());
-                    System.out.println(entry.getValue().content);
-                }*/
+            String longitude = params[0];
+            String latitude = params[1];
 
 
 
-            return null;
+            Request request = new Request.Builder()
+                    .url("http://hidden-fortress-95984.heroku.com/hello")
+                    .header("longitude", longitude)
+                    .addHeader("latitude", latitude)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful())
+                        throw new IOException("Unexpected code " + response);
+                    String responseJson = response.body().string();
+
+                    if(responseJson.equals("[]")){
+                        //empty response do nothing.
+                    }
+                    else {
+                        Gson gson = new GsonBuilder().create();
+                        PromObject[] inProms = gson.fromJson(responseJson, PromObject[].class);
+                        for(PromObject promo :inProms){
+                            promotions.add(promo);
+                        }
+
+                    }
+
+                }
+
+        });//end client.newCall.enqueue
+
+
+                return null;
         }
+
+
+        public void onPostExecute(String result){
+            mPromoAdapter.notifyDataSetChanged();
+
+        }
+
+
     }
+
+
+
+
+
+
+
+
 }

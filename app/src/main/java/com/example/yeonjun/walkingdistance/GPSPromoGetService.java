@@ -22,13 +22,14 @@ import android.support.v4.app.ActivityCompat;
  */
 public class GPSPromoGetService extends Service {
 
-    private Handler timerMessage;
+
     private Message getPromo;
     private Criteria gpsCriteria;
     private Location prevLoc;
     private LocationListener gpsListener;
     private LocationManager gpsManager;
     private String gpsProvider;
+    private HandlerThread sammich;
 
 
     //todo:  need to start a thread that does the handler etc stuff
@@ -79,7 +80,9 @@ public class GPSPromoGetService extends Service {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }*/
-            gpsManager.requestLocationUpdates(gpsProvider, 65000, 230, gpsListener);//this puppy throws errors!
+            sammich = new HandlerThread("gpsCallback");
+            sammich.start();
+            gpsManager.requestLocationUpdates(gpsProvider, 65000, 230, gpsListener,sammich.getLooper());//this puppy throws errors!
 
 
 
@@ -88,6 +91,12 @@ public class GPSPromoGetService extends Service {
 
             System.out.println("@@@@@@@@GPS SETUP IN SERVICE@@@@@@");
         }catch(Exception e){e.printStackTrace();}
+
+
+    }
+
+    public void onDestroy(){
+        sammich.quit();
 
 
     }

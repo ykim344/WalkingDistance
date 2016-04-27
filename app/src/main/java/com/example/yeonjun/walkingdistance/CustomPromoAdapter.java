@@ -81,8 +81,8 @@ public class CustomPromoAdapter extends BaseAdapter{
 
         // setting the view to reflect the data we need to display
 
-        viewHolder.bName.setText(promo.getBusinessName());
-        viewHolder.bExp.setText(promo.promoDateTime());
+        bName.setText(promo.getBusinessName());
+        bExp.setText(promo.promoDateTime());
         Picasso.with(context)
                 .load(promo.getbusinessPhoto())
                 .into(viewHolder.bImage);
