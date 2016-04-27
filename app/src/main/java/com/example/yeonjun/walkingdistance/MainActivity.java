@@ -52,8 +52,26 @@ public class MainActivity extends AppCompatActivity {
        // startService(serviceIntent);
         Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
 
-        DownloadPromo downTask = new DownloadPromo();
-        downTask.execute("-89.406318", "43.071309");
+       // DownloadPromo downTask = new DownloadPromo();
+        //downTask.execute("-89.406318", "43.071309");
+
+
+        PromObject objP ;
+        objP = new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/GreatDanePub.jpg",
+                "0000","82.145635","43.071309");
+        promotions.add(objP);
+
+        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/FreshMadisonMarket.jpg",
+                "0000","82.145635","43.071309"));
+        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/MickiesDairyBar.jpg",
+                "0000","82.145635","43.071309"));
+        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/UrbanOutfitters.jpg",
+                "0000","82.145635","43.071309"));
+
+
+
+
+
 
 
 

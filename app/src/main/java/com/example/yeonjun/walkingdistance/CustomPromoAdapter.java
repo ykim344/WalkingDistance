@@ -55,15 +55,16 @@ public class CustomPromoAdapter extends BaseAdapter{
 
     public View getView(int position, View convertView, ViewGroup parent){
         ViewHolder viewHolder ;
-        View promoIcon = convertView ; // inflate the layout for single promoObject
-        if( promoIcon == null){
+         ; // inflate the layout for single promoObject
+        if( convertView == null){
             viewHolder = new ViewHolder() ;
             LayoutInflater inflater = LayoutInflater.from(context);
-            promoIcon = inflater.inflate(layoutResourceId,parent,false);
+            convertView = inflater.inflate(layoutResourceId,parent,false);
 
-            viewHolder.bName = (TextView) promoIcon.findViewById(R.id.storeName);
-            viewHolder.bExp = (TextView) promoIcon.findViewById(R.id.expDate);
-            viewHolder.bImage = (ImageView) promoIcon.findViewById(R.id.businessImage);
+            viewHolder.bName = (TextView) convertView.findViewById(R.id.storeName);
+            viewHolder.bExp = (TextView) convertView.findViewById(R.id.expDate);
+            viewHolder.bImage = (ImageView) convertView.findViewById(R.id.businessImage);
+            convertView.setTag(viewHolder);
         }
         else{
             viewHolder = (ViewHolder) convertView.getTag() ;
@@ -71,18 +72,15 @@ public class CustomPromoAdapter extends BaseAdapter{
         final  PromObject promo = getItem(position);
         // get a refrence to different view element we want to update
 
-        // gets a reference to the different view elements we want to update
-        bName = (TextView) promoIcon.findViewById(R.id.storeName);
-        bExp = (TextView ) promoIcon.findViewById(R.id.expDate);
-        bImage = (ImageView) promoIcon.findViewById(R.id.businessImage);
+        // gets a reference to the different view elements we want to updat
 
         // get the data from the data array
 
 
         // setting the view to reflect the data we need to display
 
-        bName.setText(promo.getBusinessName());
-        bExp.setText(promo.promoDateTime());
+        viewHolder.bName.setText(promo.getBusinessName());
+        viewHolder.bExp.setText(promo.promoDateTime());
         Picasso.with(context)
                 .load(promo.getbusinessPhoto())
                 .into(viewHolder.bImage);
@@ -95,6 +93,6 @@ public class CustomPromoAdapter extends BaseAdapter{
 
 
 
-        return  promoIcon ;
+        return  convertView ;
     }
 }
