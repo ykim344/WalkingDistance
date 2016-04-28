@@ -47,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
         promoListview = (GridView)findViewById(R.id.gridView);
         mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
         iFilter = new IntentFilter();
-        iFilter.addAction("reloadNewPromos");
+        iFilter.addAction("gotcoords");
         Intent serviceIntent = new Intent(this,GPSPromoGetService.class);
-       // startService(serviceIntent);
-        Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
+
+
 
        // DownloadPromo downTask = new DownloadPromo();
         //downTask.execute("-89.406318", "43.071309");
@@ -78,16 +78,18 @@ public class MainActivity extends AppCompatActivity {
         //Stufff done for receiving broadcast from the background intent service
         gpsUpdateReceiver = new BroadcastReceiver(){
             public void onReceive(Context context, Intent intent) {
-                DownloadPromo downTask = new DownloadPromo();
+               // DownloadPromo downTask = new DownloadPromo();
                 //downTask.execute(Double.toString(intent.getDoubleExtra("Longitude",0)),Double.toString(intent.getDoubleExtra("Latitude",0)));
-                downTask.execute("-89.406318","43.071309");
-                //mPromoAdapter.notifyDataSetChanged();
-                //Toast.makeText(getApplicationContext(), "got Latitude: " + intent.getDoubleExtra("Latitude",0),Toast.LENGTH_SHORT).show();
+               // downTask.execute("-89.406318","43.071309");
+
+
+                System.out.println("!GOT BORADCAST IN MAIN!!$$$$$$$$$$$$$$$$$$");
 
             }
         };
 
         registerReceiver(gpsUpdateReceiver,iFilter);
+        startService(serviceIntent);
 
 
         if(promoListview != null){
@@ -96,13 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-       // boolean loadResult;
-       // promotions = null;
-       // loadResult = loadFromDisk();
-       // if(loadResult  && promotions != null){
-            //load successful, TODO:check for and delete expired promos finish the method via getting an iterator etc
-            //deleteExpired(promotions);
-       // }
+
 
 
 

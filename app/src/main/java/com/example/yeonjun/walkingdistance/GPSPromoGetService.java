@@ -23,9 +23,7 @@ import android.support.v4.app.ActivityCompat;
 public class GPSPromoGetService extends Service {
 
 
-    private Message getPromo;
-    private Criteria gpsCriteria;
-    private Location prevLoc;
+
     private LocationListener gpsListener;
     private LocationManager gpsManager;
     private String gpsProvider;
@@ -45,11 +43,11 @@ public class GPSPromoGetService extends Service {
     public void onCreate() {
         System.out.println("!!!!!!IN GPS PROMO SERVICE!!!!!!");
 
-        prevLoc = null;
+
 
         try {
-            gpsManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            gpsProvider = gpsManager.NETWORK_PROVIDER;
+           // gpsManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+           // gpsProvider = gpsManager.NETWORK_PROVIDER;
 
             gpsListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
@@ -80,9 +78,12 @@ public class GPSPromoGetService extends Service {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }*/
+
+
             sammich = new HandlerThread("gpsCallback");
             sammich.start();
-            gpsManager.requestLocationUpdates(gpsProvider, 65000, 230, gpsListener,sammich.getLooper());//this puppy throws errors!
+            gpsManager.requestLocationUpdates(gpsProvider, 30, 5, gpsListener,sammich.getLooper());//this puppy throws errors!
+
 
 
 
