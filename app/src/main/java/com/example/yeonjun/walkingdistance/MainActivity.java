@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private CustomPromoAdapter mPromoAdapter ;
     private BroadcastReceiver gpsUpdateReceiver;
     private IntentFilter iFilter;
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
         iFilter = new IntentFilter();
         iFilter.addAction("gotcoords");
-        Intent serviceIntent = new Intent(this,GPSPromoGetService.class);
+        serviceIntent = new Intent(this,GPSPromoGetService.class);
 
 
 
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 "0000","82.145635","43.071309"));
         promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/MickiesDairyBar.jpg",
                 "0000","82.145635","43.071309"));
-        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/UrbanOutfitters.jpg",
-                "0000","82.145635","43.071309"));
+        promotions.add(new PromObject(1, "gregs", 12, 14, "http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/UrbanOutfitters.jpg",
+                "0000", "82.145635", "43.071309"));
 
 
 
@@ -88,8 +89,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        registerReceiver(gpsUpdateReceiver,iFilter);
-        startService(serviceIntent);
+
 
 
         if(promoListview != null){
@@ -102,6 +102,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    protected void onResume(){
+        super.onResume();
+        registerReceiver(gpsUpdateReceiver,iFilter);
+        startService(serviceIntent);
+
+    }
+
+
+    protected void onPause(){
+        super.onPause();
+        stopService(serviceIntent);
+        unregisterReceiver(gpsUpdateReceiver);
     }
 
     //method for combing over promotions in the array and deleting
