@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         promotions = new ArrayList<PromObject>();
-        // 2promotions.add();
         promoListview = (GridView)findViewById(R.id.gridView);
         mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
         iFilter = new IntentFilter();
@@ -53,21 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-       // DownloadPromo downTask = new DownloadPromo();
-        //downTask.execute("-89.406318", "43.071309");
 
-
-        PromObject objP ;
-        objP = new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/GreatDanePub.jpg",
-                "0000","82.145635","43.071309");
-        promotions.add(objP);
-
-        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/FreshMadisonMarket.jpg",
-                "0000","82.145635","43.071309"));
-        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/MickiesDairyBar.jpg",
-                "0000","82.145635","43.071309"));
-        promotions.add(new PromObject(1, "gregs", 12, 14, "http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/UrbanOutfitters.jpg",
-                "0000", "82.145635", "43.071309"));
 
 
 
@@ -79,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
         //Stufff done for receiving broadcast from the background intent service
         gpsUpdateReceiver = new BroadcastReceiver(){
             public void onReceive(Context context, Intent intent) {
-               // DownloadPromo downTask = new DownloadPromo();
-                //downTask.execute(Double.toString(intent.getDoubleExtra("Longitude",0)),Double.toString(intent.getDoubleExtra("Latitude",0)));
+               DownloadPromo downTask = new DownloadPromo();
+                downTask.execute(Double.toString(intent.getDoubleExtra("Longitude",0)),Double.toString(intent.getDoubleExtra("Latitude",0)));
                // downTask.execute("-89.406318","43.071309");
 
 
-                System.out.println("!GOT BORADCAST IN MAIN!!$$$$$$$$$$$$$$$$$$");
+                System.out.println("!GOT BORADCAST IN MAIN Longitude = "+intent.getDoubleExtra("longitude",0)+"!!$$$$$$$$$$$$$$$$$$");
 
             }
         };
