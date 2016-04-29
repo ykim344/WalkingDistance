@@ -82,7 +82,7 @@ public class GPSPromoGetService extends Service {
 
            sammich = new HandlerThread("gpsCallback");
            sammich.start();
-           gpsManager.requestLocationUpdates(gpsProvider, 30, 5, gpsListener,sammich.getLooper());//this puppy throws errors!
+           gpsManager.requestLocationUpdates(gpsProvider, 30000, 25, gpsListener,sammich.getLooper());//this puppy throws errors!
 
 
 

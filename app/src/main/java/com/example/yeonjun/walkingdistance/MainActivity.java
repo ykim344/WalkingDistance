@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                // downTask.execute("-89.406318","43.071309");
 
 
-                System.out.println("!GOT BORADCAST IN MAIN Longitude = "+intent.getDoubleExtra("longitude",0)+"!!$$$$$$$$$$$$$$$$$$");
+                System.out.println("!GOT BORADCAST IN MAIN Longitude = "+intent.getDoubleExtra("Longitude",0)+"!!$$$$$$$$$$$$$$$$$$");
 
             }
         };
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         registerReceiver(gpsUpdateReceiver,iFilter);
         startService(serviceIntent);
+
 
     }
 
@@ -204,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
                         PromObject[] inProms = gson.fromJson(responseJson, PromObject[].class);
                         for(PromObject promo :inProms){
                             promotions.add(promo);
+                            System.out.println("ADDED PROMO&&&&&&&&&&&");
+                            System.out.println("Business: "+promo.getBusinessName());
                         }
 
                     }

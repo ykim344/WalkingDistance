@@ -14,8 +14,8 @@ public class PromObject implements Serializable {
     private String promoPhoto;//to get/save images from disk and to get from JSON, they can be converted to bitmaps in the activity
     private String businessPhoto;
     private String businessName;  //might not need this
-    private String longitude;
-    private String latitude;
+    private Double longitude;
+    private Double latitude;
     private long id; //unique id for promo item may not be necessary
 
     //null empty constructor
@@ -29,7 +29,7 @@ public class PromObject implements Serializable {
 
     }
 
-    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String businessPhoto, String promoPhoto,String longitude,String latitude){
+    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String businessPhoto, String promoPhoto,Double longitude,Double latitude){
         this.id = id;
         this.businessName = businessName;
         this.expirationDay = expirationDay;
@@ -68,11 +68,11 @@ public class PromObject implements Serializable {
         return promoPhoto;
     }
 
-    public String getlatitude(){
+    public Double getLatitude(){
         return latitude;
     }
 
-    public String getLongitude(){
+    public Double getLongitude(){
         return longitude;
     }
 
