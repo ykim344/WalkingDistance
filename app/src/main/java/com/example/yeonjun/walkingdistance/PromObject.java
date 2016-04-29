@@ -1,6 +1,7 @@
 package com.example.yeonjun.walkingdistance;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 
 /**
  * Created by klay2 on 3/24/16.
@@ -14,8 +15,8 @@ public class PromObject implements Serializable {
     private String promoPhoto;//to get/save images from disk and to get from JSON, they can be converted to bitmaps in the activity
     private String businessPhoto;
     private String businessName;  //might not need this
-    private String longitude;
-    private String latitude;
+    private double longitude;
+    private double latitude;
     private long id; //unique id for promo item may not be necessary
 
     //null empty constructor
@@ -29,7 +30,7 @@ public class PromObject implements Serializable {
 
     }
 
-    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String businessPhoto, String promoPhoto,String longitude,String latitude){
+    public PromObject(long id, String businessName, int expirationDay, int expirationHour, String businessPhoto, String promoPhoto,double longitude,double latitude){
         this.id = id;
         this.businessName = businessName;
         this.expirationDay = expirationDay;
@@ -68,17 +69,57 @@ public class PromObject implements Serializable {
         return promoPhoto;
     }
 
-    public String getlatitude(){
+    public double getlatitude(){
         return latitude;
     }
 
-    public String getLongitude(){
+    public double getLongitude(){
         return longitude;
     }
 
-    public String promoDateTime(){
+    public String promoDateTime() {
+        String ending ;
+        if(expirationDay == 1 ||expirationDay == 21 ||expirationDay == 31){
+           ending = "st" ;
+        }
+        if(expirationDay == 2 ||expirationDay == 22 ){
+            ending = "nd" ;
+        }
+        if(expirationDay == 3 ||expirationDay == 23 ){
+            ending = "rd" ;
+        }
+        else{
+            ending = "th";
+        }
+        String amOrPm;
 
-        return expirationDay + " at " + expirationHour ;
+        if(expirationDay > 31){
+            return null ;
+        }
+
+        if (expirationHour < 12 ) {
+            amOrPm = "am" ;
+            return "Expires: " + expirationHour+ " at " + expirationDay;
+        }
+        if (expirationHour >= 12 && expirationHour < 25) {
+           expirationHour = expirationHour % 12 ;
+
+           amOrPm = "pm" ;
+
+           if(expirationHour == 12) {
+               amOrPm = "Noon";
+
+               return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
+           }
+           if (expirationHour == 24){
+               amOrPm = "Midnight";
+               return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
+           }
+            else {
+               return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
+           }
+        }
+
+        return null ;
     }
-
 }

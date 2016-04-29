@@ -23,9 +23,7 @@ import android.support.v4.app.ActivityCompat;
 public class GPSPromoGetService extends Service {
 
 
-    private Message getPromo;
-    private Criteria gpsCriteria;
-    private Location prevLoc;
+
     private LocationListener gpsListener;
     private LocationManager gpsManager;
     private String gpsProvider;
@@ -45,7 +43,7 @@ public class GPSPromoGetService extends Service {
     public void onCreate() {
         System.out.println("!!!!!!IN GPS PROMO SERVICE!!!!!!");
 
-        prevLoc = null;
+
 
         try {
             gpsManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -71,7 +69,7 @@ public class GPSPromoGetService extends Service {
             };
 
             /*if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
+                // TODO: Consider implementing this
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -80,10 +78,11 @@ public class GPSPromoGetService extends Service {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }*/
+
+
             sammich = new HandlerThread("gpsCallback");
             sammich.start();
-            gpsManager.requestLocationUpdates(gpsProvider, 65000, 230, gpsListener,sammich.getLooper());//this puppy throws errors!
-
+            gpsManager.requestLocationUpdates(gpsProvider, 3000, 25, gpsListener,sammich.getLooper());//this puppy throws errors!
 
 
 

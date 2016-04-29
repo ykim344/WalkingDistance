@@ -7,6 +7,9 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,41 +35,113 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<PromObject> promotions;
+    static ArrayList<PromObject> likedPromotions;
     private GridView promoListview ;
     private CustomPromoAdapter mPromoAdapter ;
     private BroadcastReceiver gpsUpdateReceiver;
     private IntentFilter iFilter;
+    private Button promoListButton;
+    private Button likeListButton;
+    private Intent serviceIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        likeListButton = (Button) findViewById(R.id.likedbutn);
+        promoListButton = (Button) findViewById(R.id.promobutn);
+
+
         promotions = new ArrayList<PromObject>();
         // 2promotions.add();
         promoListview = (GridView)findViewById(R.id.gridView);
         mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
+
+        likedPromotions = new ArrayList<PromObject>();
+
         iFilter = new IntentFilter();
-        iFilter.addAction("reloadNewPromos");
-        Intent serviceIntent = new Intent(this,GPSPromoGetService.class);
-       // startService(serviceIntent);
+        iFilter.addAction("gotcoords");
+
+        mPromoAdapter.notifyDataSetChanged();
+        serviceIntent = new Intent(this,GPSPromoGetService.class);
+
+        // startService(serviceIntent);
         Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
 
        // DownloadPromo downTask = new DownloadPromo();
         //downTask.execute("-89.406318", "43.071309");
 
 
-        PromObject objP ;
-        objP = new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/GreatDanePub.jpg",
-                "0000","82.145635","43.071309");
-        promotions.add(objP);
 
-        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/FreshMadisonMarket.jpg",
-                "0000","82.145635","43.071309"));
-        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/MickiesDairyBar.jpg",
-                "0000","82.145635","43.071309"));
-        promotions.add(     new PromObject(1,"gregs",12,14,"http://i719.photobucket.com/albums/ww195/Grishakamy/BImages/UrbanOutfitters.jpg",
-                "0000","82.145635","43.071309"));
+        promoListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PromObject Obj = (PromObject) parent.getAdapter().getItem(position);
+                Intent mIntent = new Intent(MainActivity.this, toPromoImage.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putDouble("Long", Obj.getLongitude());
+                mBundle.putDouble("Lat", Obj.getlatitude());
+                mBundle.putString("ImageUrl", Obj.getbusinessPhoto());
+                mBundle.putString("Bname", Obj.getBusinessName());
+                mBundle.putString("Exp", Obj.promoDateTime());
+                mIntent.putExtras(mBundle);
+                startActivity(mIntent);
+
+
+            }
+
+        });
+        likeListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promoListview = (GridView)findViewById(R.id.gridView);
+                mPromoAdapter = new CustomPromoAdapter(MainActivity.this, R.layout.list_promobject_layout,likedPromotions);
+                promoListview.setAdapter(mPromoAdapter);
+                mPromoAdapter.notifyDataSetChanged();
+            }
+        });
+        promoListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promoListview = (GridView)findViewById(R.id.gridView);
+                mPromoAdapter = new CustomPromoAdapter(MainActivity.this, R.layout.list_promobject_layout,promotions);
+                promoListview.setAdapter(mPromoAdapter);
+                mPromoAdapter.notifyDataSetChanged();
+            }
+        });
+
+        promoListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                PromObject likedObj = (PromObject) parent.getAdapter().getItem(position);
+                if (likedPromotions.isEmpty()) {
+                    likedPromotions.add(likedObj);
+                } else {
+                    int i = 0;
+                    boolean contains = false;
+                    while (i < likedPromotions.size() && contains) {
+                        if (likedObj.getBusinessName().equals(likedPromotions.get(i).getBusinessName())) {
+                            contains = true;
+                        }
+                        i++;
+                    }
+                    if (contains == false) {
+                        likedPromotions.add(likedObj);
+                        Toast.makeText(MainActivity.this, "Added To Liked", Toast.LENGTH_SHORT);
+
+                    }
+                }
+
+
+                return true;
+            }
+        });
 
 
 
@@ -76,18 +151,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Stufff done for receiving broadcast from the background intent service
+
+
+//        registerReceiver(gpsUpdateReceiver,iFilter);
+
+
         gpsUpdateReceiver = new BroadcastReceiver(){
             public void onReceive(Context context, Intent intent) {
                 DownloadPromo downTask = new DownloadPromo();
-                //downTask.execute(Double.toString(intent.getDoubleExtra("Longitude",0)),Double.toString(intent.getDoubleExtra("Latitude",0)));
-                downTask.execute("-89.406318","43.071309");
-                //mPromoAdapter.notifyDataSetChanged();
-                //Toast.makeText(getApplicationContext(), "got Latitude: " + intent.getDoubleExtra("Latitude",0),Toast.LENGTH_SHORT).show();
+                downTask.execute(Double.toString(intent.getDoubleExtra("Longitude",0)),Double.toString(intent.getDoubleExtra("Latitude",0)));
+                // downTask.execute("-89.406318","43.071309");
+
+
+                System.out.println("!GOT BORADCAST IN MAIN Longitude = "+intent.getDoubleExtra("Longitude",0)+"!!$$$$$$$$$$$$$$$$$$");
 
             }
         };
-
-        registerReceiver(gpsUpdateReceiver,iFilter);
 
 
         if(promoListview != null){
@@ -111,6 +190,23 @@ public class MainActivity extends AppCompatActivity {
     //method for combing over promotions in the array and deleting
     //them if  they are currently expired
     //TODO: finish this thingy
+    protected void onResume(){
+        super.onResume();
+        registerReceiver(gpsUpdateReceiver,iFilter);
+        startService(serviceIntent);
+
+
+    }
+
+
+    protected void onPause(){
+        super.onPause();
+        stopService(serviceIntent);
+        unregisterReceiver(gpsUpdateReceiver);
+    }
+
+
+
     private void deleteExpired(ArrayList<PromObject> promotionsIn){
 
         return;
@@ -179,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             //TODO:  USE COORDINATES TO GET NEW PROMO and add it to the arraylist and update adapter
-             final OkHttpClient client = new OkHttpClient();
+            final OkHttpClient client = new OkHttpClient();
             String longitude = params[0];
             String latitude = params[1];
 
@@ -191,6 +287,34 @@ public class MainActivity extends AppCompatActivity {
                     .addHeader("latitude", latitude)
                     .build();
 
+            //SYNCHRONOUGET
+            try {
+                Response response = client.newCall(request).execute();
+                if (!response.isSuccessful())
+                    throw new IOException("Unexpected code " + response);
+                String responseJson = response.body().string();
+
+                if(responseJson.equals("[]")){
+                    //empty response do nothing.
+                }
+                else {
+                    Gson gson = new GsonBuilder().create();
+                    PromObject[] inProms = gson.fromJson(responseJson, PromObject[].class);
+                    for (PromObject promo : inProms) {
+                        promotions.add(promo);
+                        System.out.println("ADDED PROMO&&&&&&&&&&&");
+                        System.out.println("Business: " + promo.getBusinessName());
+                    }
+                }
+
+
+            }catch(Exception e){e.printStackTrace();}
+
+
+
+
+
+            /*
             client.newCall(request).enqueue(new Callback() {
                 @Override public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -209,26 +333,36 @@ public class MainActivity extends AppCompatActivity {
                         PromObject[] inProms = gson.fromJson(responseJson, PromObject[].class);
                         for(PromObject promo :inProms){
                             promotions.add(promo);
+                            System.out.println("ADDED PROMO&&&&&&&&&&&");
+                            System.out.println("Business: "+promo.getBusinessName());
                         }
 
                     }
 
                 }
 
-        });//end client.newCall.enqueue
+            });//end client.newCall.enqueue*/
 
 
-                return null;
+            return "go";
         }
 
 
         public void onPostExecute(String result){
+            promoListview = (GridView)findViewById(R.id.gridView);
+            mPromoAdapter = new CustomPromoAdapter(MainActivity.this, R.layout.list_promobject_layout,promotions);
+            promoListview.setAdapter(mPromoAdapter);
             mPromoAdapter.notifyDataSetChanged();
+
+        }
+        public void update(){
 
         }
 
 
+
     }
+
 
 
 
