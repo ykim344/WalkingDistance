@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<PromObject> promotions;
     static ArrayList<PromObject> likedPromotions;
+    private HashSet<Long> promoIds;
     private GridView promoListview ;
     private CustomPromoAdapter mPromoAdapter ;
     private BroadcastReceiver gpsUpdateReceiver;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         promotions = new ArrayList<PromObject>();
+        promoIds = new HashSet<Long>();
         // 2promotions.add();
         promoListview = (GridView)findViewById(R.id.gridView);
         mPromoAdapter = new CustomPromoAdapter(this, R.layout.list_promobject_layout,promotions);
@@ -301,9 +304,12 @@ public class MainActivity extends AppCompatActivity {
                     Gson gson = new GsonBuilder().create();
                     PromObject[] inProms = gson.fromJson(responseJson, PromObject[].class);
                     for (PromObject promo : inProms) {
-                        promotions.add(promo);
-                        System.out.println("ADDED PROMO&&&&&&&&&&&");
-                        System.out.println("Business: " + promo.getBusinessName());
+                        if(!promoIds.contains(promo.getId())) {
+                            promotions.add(promo);
+                            promoIds.add(promo.getId());
+                            System.out.println("ADDED PROMO&&&&&&&&&&&");
+                            System.out.println("Business: " + promo.getBusinessName());
+                        }
                     }
                 }
 
