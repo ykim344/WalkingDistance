@@ -47,7 +47,7 @@ public class GPSPromoGetService extends Service {
 
         try {
             gpsManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            gpsProvider = gpsManager.NETWORK_PROVIDER;
+            gpsProvider = gpsManager.GPS_PROVIDER;
 
             gpsListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
@@ -82,7 +82,7 @@ public class GPSPromoGetService extends Service {
 
             sammich = new HandlerThread("gpsCallback");
             sammich.start();
-            gpsManager.requestLocationUpdates(gpsProvider, 3000, 25, gpsListener,sammich.getLooper());//this puppy throws errors!
+            gpsManager.requestLocationUpdates(gpsProvider, 10000, 30, gpsListener,sammich.getLooper());//this puppy throws errors!
 
 
 
