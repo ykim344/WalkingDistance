@@ -1,6 +1,8 @@
 package com.example.yeonjun.walkingdistance;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +18,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 
 /**
  * Created by klay2 on 4/19/16.
@@ -42,6 +45,18 @@ public class GPSPromoGetService extends Service {
 
     public void onCreate() {
         System.out.println("!!!!!!IN GPS PROMO SERVICE!!!!!!");
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("WalkingDistance")
+                .setContentText("getting promos: GPS")
+                .setContentIntent(pendingIntent).build();
+
+        startForeground(1337, notification);
 
 
 
@@ -82,7 +97,7 @@ public class GPSPromoGetService extends Service {
 
             sammich = new HandlerThread("gpsCallback");
             sammich.start();
-            gpsManager.requestLocationUpdates(gpsProvider, 10000, 30, gpsListener,sammich.getLooper());//this puppy throws errors!
+            gpsManager.requestLocationUpdates(gpsProvider, 10000, 5, gpsListener,sammich.getLooper());//this puppy throws errors!
 
 
 

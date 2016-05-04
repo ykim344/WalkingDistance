@@ -71,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         mPromoAdapter.notifyDataSetChanged();
         serviceIntent = new Intent(this,GPSPromoGetService.class);
+        startService(serviceIntent);
 
         // startService(serviceIntent);
-        Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
 
        // DownloadPromo downTask = new DownloadPromo();
         //downTask.execute("-89.406318", "43.071309");
@@ -190,13 +191,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //method for combing over promotions in the array and deleting
-    //them if  they are currently expired
-    //TODO: finish this thingy
+
     protected void onResume(){
         super.onResume();
         registerReceiver(gpsUpdateReceiver,iFilter);
-        startService(serviceIntent);
+
 
 
     }
@@ -204,11 +203,15 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onPause(){
         super.onPause();
-        stopService(serviceIntent);
+        //stopService(serviceIntent);
         unregisterReceiver(gpsUpdateReceiver);
     }
 
+    protected void onDestroy(){
+        super.onDestroy();
+        stopService(serviceIntent);
 
+    }
 
     private void deleteExpired(ArrayList<PromObject> promotionsIn){
 
