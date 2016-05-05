@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         iFilter = new IntentFilter();
         iFilter.addAction("gotcoords");
 
-        mPromoAdapter.notifyDataSetChanged();
+        //mPromoAdapter.notifyDataSetChanged();
         serviceIntent = new Intent(this,GPSPromoGetService.class);
 
 
@@ -197,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         //registerReceiver(gpsUpdateReceiver,iFilter);
+        promoListview.setAdapter(mPromoAdapter);
+        mPromoAdapter.notifyDataSetChanged();
 
 
 
