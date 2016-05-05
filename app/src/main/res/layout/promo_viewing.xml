@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+<RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.example.yeonjun.walkingdistance.toPromoImage"
     android:orientation="vertical"
     android:background="#000000">
@@ -60,14 +65,6 @@
        android:layout_height="150dp"
        android:layout_alignParentBottom="true"
        android:layout_centerHorizontal="true">
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:background="@drawable/border"
-        >
-    </fragment>
 
    </LinearLayout>
     <LinearLayout
@@ -120,4 +117,16 @@
        />
     </LinearLayout>
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:background="@drawable/border"
+        android:layout_below="@+id/btnLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </fragment>
+
 </RelativeLayout>
+</ScrollView>

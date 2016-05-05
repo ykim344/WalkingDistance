@@ -33,10 +33,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+
+
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<PromObject> promotions;
-    static ArrayList<PromObject> likedPromotions;
+    public static ArrayList<PromObject> promotions;
+    public static ArrayList<PromObject> likedPromotions;
     private HashSet<Long> promoIds;
     private GridView promoListview ;
     private CustomPromoAdapter mPromoAdapter ;
