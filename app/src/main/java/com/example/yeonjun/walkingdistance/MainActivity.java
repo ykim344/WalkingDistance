@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPromoAdapter.notifyDataSetChanged();
         serviceIntent = new Intent(this,GPSPromoGetService.class);
-        startService(serviceIntent);
+
         PromObject obj ;
         obj = new PromObject(1,"Walking Distance",15,16,"https://www.djc.com/stories/images/20130206/POM_2_Mushroom_Farm_KS_big.jpg","http://d1v471jzilqnl0.cloudfront.net/wp-content/uploads/2012/12/BBBS-WEEKDAY-PROMO.jpg",43.071617,-89.407197);
         promotions.add(obj);
@@ -155,10 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //Stufff done for receiving broadcast from the background intent service
 
-
-//        registerReceiver(gpsUpdateReceiver,iFilter);
 
 
         gpsUpdateReceiver = new BroadcastReceiver(){
@@ -173,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
+        registerReceiver(gpsUpdateReceiver,iFilter);
+        startService(serviceIntent);
         if(promoListview != null){
             promoListview.setAdapter(mPromoAdapter);
         }
@@ -196,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         registerReceiver(gpsUpdateReceiver,iFilter);
-
+        promoListview.setAdapter(mPromoAdapter);
+        mPromoAdapter.notifyDataSetChanged();
 
 
     }
@@ -205,13 +204,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         //stopService(serviceIntent);
-        unregisterReceiver(gpsUpdateReceiver);
+
     }
 
     protected void onDestroy(){
         super.onDestroy();
         stopService(serviceIntent);
-
+        unregisterReceiver(gpsUpdateReceiver);
     }
 
     private void deleteExpired(ArrayList<PromObject> promotionsIn){
@@ -324,34 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            /*
-            client.newCall(request).enqueue(new Callback() {
-                @Override public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
 
-                @Override public void onResponse(Call call, Response response) throws IOException {
-                    if (!response.isSuccessful())
-                        throw new IOException("Unexpected code " + response);
-                    String responseJson = response.body().string();
-
-                    if(responseJson.equals("[]")){
-                        //empty response do nothing.
-                    }
-                    else {
-                        Gson gson = new GsonBuilder().create();
-                        PromObject[] inProms = gson.fromJson(responseJson, PromObject[].class);
-                        for(PromObject promo :inProms){
-                            promotions.add(promo);
-                            System.out.println("ADDED PROMO&&&&&&&&&&&");
-                            System.out.println("Business: "+promo.getBusinessName());
-                        }
-
-                    }
-
-                }
-
-            });//end client.newCall.enqueue*/
 
 
             return "go";

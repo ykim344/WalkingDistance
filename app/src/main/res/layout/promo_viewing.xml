@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+<RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -60,21 +65,14 @@
 
 
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/btnLayout"
-       android:layout_alignParentBottom="true">
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:background="@drawable/border"
-        >
-    </fragment>
 
-   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,46 +81,58 @@
         >
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="USE"
-        android:id="@+id/useBtn"
-        android:background="#82aa78"
-        android:layout_weight="1"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USE"
+            android:id="@+id/useBtn"
+            android:background="#82aa78"
+            android:layout_weight="1"
 
-        android:textColor="#ffffff"
-        android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
 
-        />
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LIKE"
-        android:id="@+id/likeBtn"
-        android:layout_weight="1"
-        android:background="#7488ec"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LIKE"
+            android:id="@+id/likeBtn"
+            android:layout_weight="1"
+            android:background="#7488ec"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
 
-        android:layout_toRightOf="@+id/useBtn"
+            android:layout_toRightOf="@+id/useBtn"
 
-       />
+            />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        android:id="@+id/deleteBtn"
-        android:layout_weight="1"
-        android:background="#fc6159"
-        android:textColor="#ffffff"
-        android:textSize="20dp"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/deleteBtn"
+            android:layout_weight="1"
+            android:background="#fc6159"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
 
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-       />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
     </LinearLayout>
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:background="@drawable/border"
+        android:layout_below="@+id/btnLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </fragment>
+
 </RelativeLayout>
+</ScrollView>
