@@ -23,7 +23,7 @@ public class PromObject implements Serializable {
     public PromObject(){
         expirationDay = 0;//maybe set to -1 for no expiration
         expirationHour = 0;//maybe set to -1 for no expiration
-        promoPhoto = null;
+        businessPhoto = null;
         promoPhoto = null;
         businessName = null;
         id = -1;
@@ -79,47 +79,47 @@ public class PromObject implements Serializable {
 
     public String promoDateTime() {
         String ending ;
-        if(expirationDay == 1 ||expirationDay == 21 ||expirationDay == 31){
-           ending = "st" ;
+
+        switch(expirationDay){
+            case 1: ending = "st";
+                break;
+            case 2: ending = "nd";
+                break;
+            case 3: ending = "rd";
+                break;
+            case 21: ending = "st";
+                break;
+            case 22: ending = "nd";
+                break;
+            case 23: ending = "rd";
+                break;
+            case 31: ending = "st";
+                break;
+
+            default: ending = "th";
+                break;
         }
-        if(expirationDay == 2 ||expirationDay == 22 ){
-            ending = "nd" ;
-        }
-        if(expirationDay == 3 ||expirationDay == 23 ){
-            ending = "rd" ;
-        }
-        else{
-            ending = "th";
-        }
+
+
         String amOrPm;
 
-        if(expirationDay > 31){
-            return null ;
-        }
 
-        if (expirationHour < 12 ) {
+        if(expirationHour == 12) {
+            amOrPm = "Noon";
+
+        }
+        else if(expirationHour == 24){
+            amOrPm = "Midnight";
+
+        }
+        else if (expirationHour < 12 ) {
             amOrPm = "am" ;
-            return "Expires: " + expirationHour+ " at " + expirationDay;
         }
-        if (expirationHour >= 12 && expirationHour < 25) {
-           expirationHour = expirationHour % 12 ;
-
-           amOrPm = "pm" ;
-
-           if(expirationHour == 12) {
-               amOrPm = "Noon";
-
-               return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
-           }
-           if (expirationHour == 24){
-               amOrPm = "Midnight";
-               return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
-           }
-            else {
-               return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
-           }
+        else{
+            amOrPm = "pm";
         }
+        return "Expires: " + expirationHour + amOrPm + " on the " + expirationDay + ending;
 
-        return null ;
+
     }
 }

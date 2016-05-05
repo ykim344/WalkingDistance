@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPromoAdapter.notifyDataSetChanged();
         serviceIntent = new Intent(this,GPSPromoGetService.class);
-        startService(serviceIntent);
+
 
         // startService(serviceIntent);
         //Toast.makeText(getApplicationContext(), "getting this far",Toast.LENGTH_SHORT).show();
@@ -89,10 +89,11 @@ public class MainActivity extends AppCompatActivity {
                 Bundle mBundle = new Bundle();
                 mBundle.putDouble("Long", Obj.getLongitude());
                 mBundle.putDouble("Lat", Obj.getlatitude());
-                mBundle.putString("ImageUrl", Obj.getbusinessPhoto());
+                mBundle.putString("ImageUrl", Obj.getPromoPhoto());
                 mBundle.putString("Bname", Obj.getBusinessName());
                 mBundle.putString("Exp", Obj.promoDateTime());
                 mIntent.putExtras(mBundle);
+
                 startActivity(mIntent);
 
 
@@ -172,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
+        registerReceiver(gpsUpdateReceiver,iFilter);
+        startService(serviceIntent);
         if(promoListview != null){
             promoListview.setAdapter(mPromoAdapter);
         }
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onResume(){
         super.onResume();
-        registerReceiver(gpsUpdateReceiver,iFilter);
+        //registerReceiver(gpsUpdateReceiver,iFilter);
 
 
 
@@ -204,12 +206,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         //stopService(serviceIntent);
-        unregisterReceiver(gpsUpdateReceiver);
+        //unregisterReceiver(gpsUpdateReceiver);
     }
 
     protected void onDestroy(){
         super.onDestroy();
         stopService(serviceIntent);
+        unregisterReceiver(gpsUpdateReceiver);
 
     }
 
