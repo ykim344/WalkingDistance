@@ -27,6 +27,8 @@ public class toPromoImage extends Activity {
     private  GoogleMap googleMap ;
 
     Button thumbsUp ;
+    Button like;
+    Button Delete;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,10 @@ public class toPromoImage extends Activity {
 
 
 
+
         LatLng Cord = new LatLng(Latitude, Longitude);
+
+
 
         final TextView businessName = (TextView) findViewById(R.id.buzName);
        final TextView experation = (TextView) findViewById(R.id.expiration);
