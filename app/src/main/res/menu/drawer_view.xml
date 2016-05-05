@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/promos2"
+            android:title="Show all promos"
+            />
+        <item
+            android:id="@+id/liked2"
+            android:title="Show liked promos"
+            />
+    </group>
+</menu>
