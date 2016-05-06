@@ -26,28 +26,42 @@ import com.squareup.picasso.Picasso;
 public class toPromoImage extends Activity {
     private  GoogleMap googleMap ;
 
-    Button thumbsUp ;
+    Button deleteButton;
+    Button likeButton;
+    Button useButton;
+    String BName;
+    boolean marked;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.promo_viewing);
         Bundle bundle = getIntent().getExtras();
-       double Longitude = bundle.getDouble("Long");
-      double Latitude = bundle.getDouble("Lat");
-       String BName = bundle.getString("Bname");
+        double Longitude = bundle.getDouble("Long");
+        double Latitude = bundle.getDouble("Lat");
+        BName = bundle.getString("Bname");
         String BusImage = bundle.getString("ImageUrl");
         String exper = bundle.getString("Exp");
 
+        useButton = (Button)findViewById(R.id.useBtn);
+        deleteButton = (Button)findViewById(R.id.deleteBtn);
+        likeButton = (Button)findViewById(R.id.likeBtn);
 
+        marked = false;
+        for(PromObject p:MainActivity.likedPromotions){
+            if(p.equals(MainActivity.workingObj))
+                marked = true;
+        }
 
+        if(marked){
+            likeButton.setText("Unlike");
+        }
 
-
-
+        buttonHandler();
 
         LatLng Cord = new LatLng(Latitude, Longitude);
 
         final TextView businessName = (TextView) findViewById(R.id.buzName);
-       final TextView experation = (TextView) findViewById(R.id.expiration);
+        final TextView experation = (TextView) findViewById(R.id.expiration);
         ImageView bPic = (ImageView) findViewById(R.id.imageView) ;
 
 
@@ -81,4 +95,53 @@ public class toPromoImage extends Activity {
 
 
     }
+
+
+
+    private void buttonHandler() {
+
+        useButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(toPromoImage.this, "show this message to the staff",
+                        Toast.LENGTH_LONG).show();
+                MainActivity.promotions.remove(MainActivity.workingObj);
+                if (marked)
+                    MainActivity.likedPromotions.remove(MainActivity.workingObj);
+
+            }
+        });
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                //like=>unlike
+                if (marked) {
+                    Toast.makeText(toPromoImage.this,"Remove from Liked", Toast.LENGTH_SHORT).show();
+                    MainActivity.likedPromotions.remove(MainActivity.workingObj);
+                    likeButton.setText("Like");
+                    marked = false;
+                }
+                //unlike->like
+                else {
+                    Toast.makeText(toPromoImage.this,"Added to Liked", Toast.LENGTH_SHORT).show();
+                    MainActivity.likedPromotions.add(MainActivity.workingObj);
+                    likeButton.setText("Unlike");
+                    marked = true;
+                }
+
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(toPromoImage.this,"Deleting the promo", Toast.LENGTH_SHORT).show();
+                MainActivity.promotions.remove(MainActivity.workingObj);
+                if (marked)
+                    MainActivity.likedPromotions.remove(MainActivity.workingObj);
+            }
+        });
+    }
+
+
+
+
+
 }

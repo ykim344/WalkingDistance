@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     static ArrayList<PromObject> promotions;
     static ArrayList<PromObject> likedPromotions;
+    static PromObject workingObj;
     private HashSet<Long> promoIds;
     private GridView promoListview ;
     private CustomPromoAdapter mPromoAdapter ;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         serviceIntent = new Intent(this,GPSPromoGetService.class);
 
         PromObject obj ;
-        obj = new PromObject(1,"Walking Distance",15,16,"https://www.djc.com/stories/images/20130206/POM_2_Mushroom_Farm_KS_big.jpg","http://d1v471jzilqnl0.cloudfront.net/wp-content/uploads/2012/12/BBBS-WEEKDAY-PROMO.jpg",43.071617,-89.407197);
+        obj = new PromObject(1,"Walking Distance",15,16,"https://www.djc.com/stories/images/20130206/POM_2_Mushroom_Farm_KS_big.jpg","http://d1v471jzilqnl0.cloudfront.net/wp-content/uploads/2012/12/BBBS-WEEKDAY-PROMO.jpg",-89.385680,43.075222);
         promotions.add(obj);
 
         // startService(serviceIntent);
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PromObject Obj = (PromObject) parent.getAdapter().getItem(position);
+                workingObj = Obj;
                 Intent mIntent = new Intent(MainActivity.this, toPromoImage.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putDouble("Long", Obj.getLongitude());
@@ -125,22 +127,26 @@ public class MainActivity extends AppCompatActivity {
 
 
                 PromObject likedObj = (PromObject) parent.getAdapter().getItem(position);
-                if (likedPromotions.isEmpty()) {
+//                if (likedPromotions.isEmpty()) {
+//                    likedPromotions.add(likedObj);
+//                } else {
+//                    int i = 0;
+//                    boolean contains = false;
+//                    while (i < likedPromotions.size() && contains) {
+//                        if (likedObj.getBusinessName().equals(likedPromotions.get(i).getBusinessName())) {
+//                            contains = true;
+//                        }
+//                        i++;
+//                    }
+//                    if (contains == false) {
+//                        likedPromotions.add(likedObj);
+//                        Toast.makeText(MainActivity.this, "Added To Liked", Toast.LENGTH_SHORT);
+//
+//                    }
+//                }
+                if(!likedPromotions.contains(likedObj)){
                     likedPromotions.add(likedObj);
-                } else {
-                    int i = 0;
-                    boolean contains = false;
-                    while (i < likedPromotions.size() && contains) {
-                        if (likedObj.getBusinessName().equals(likedPromotions.get(i).getBusinessName())) {
-                            contains = true;
-                        }
-                        i++;
-                    }
-                    if (contains == false) {
-                        likedPromotions.add(likedObj);
-                        Toast.makeText(MainActivity.this, "Added To Liked", Toast.LENGTH_SHORT);
-
-                    }
+                    Toast.makeText(MainActivity.this,"Added to Liked", Toast.LENGTH_SHORT).show();
                 }
 
 

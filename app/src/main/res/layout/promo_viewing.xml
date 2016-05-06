@@ -60,7 +60,8 @@
         android:textStyle="italic"
         android:layout_alignBottom="@+id/imageView"
         android:layout_gravity="bottom"
-        android:theme="@android:style/Widget.DeviceDefault.Light.ListView.DropDown" />
+        android:theme="@android:style/Widget.DeviceDefault.Light.ListView.DropDown"
+        android:textColor="#e3e6f0" />
     </android.support.v7.widget.CardView>
 
 
